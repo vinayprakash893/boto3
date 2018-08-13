@@ -1,0 +1,9 @@
+import boto3
+def lambda_handler(event, context):
+    time_stopped = event['time']
+    instance_id = event['detail']['instance-id']
+    email_body = 'Instance with ID = {}, stopped at time {}'.format(instance_id,time_stopped)
+    snsClient = boto3.client('sns')
+    snsClient.publish(TopicArn='arn:aws:sns:ap-south-1:111111111111:weekday-7am',
+                      Message=email_body,
+                      Subject='EC2 Alert')
